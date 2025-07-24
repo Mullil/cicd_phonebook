@@ -17,10 +17,11 @@
     "start": "node index.cjs",
     "dev:backend": "nodemon index.cjs",
     "dev:frontend": "vite",
-    "build:ui": "cd puhelinluettelo && npm run build && cp -r dist ../dist",
+    "build:ui": "rm -rf dist && cd puhelinluettelo && npm run build && cp -r dist ../dist",
     "build": "vite build",
     "deploy": "fly deploy",
-    "lint": "eslint .",
+    "lint": "eslint './**/*.{js,jsx}'",
+    "lint:fix": "eslint --fix './**/*.{js,jsx}'",
     "test": "playwright test"
   },
   "author": "Eetu Taatila",

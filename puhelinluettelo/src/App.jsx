@@ -1,4 +1,4 @@
-import { useState , useEffect} from 'react'
+import { useState , useEffect } from 'react'
 import personService from './services/persons'
 
 const Notification = ({ notification }) => {
@@ -21,52 +21,51 @@ const Notification = ({ notification }) => {
 
 }
 
-const Remove = ({id, setPersons, name, setNotification }) => {
+const Remove = ({ id, setPersons, name, setNotification }) => {
   const handleRemove = () => {
     if (window.confirm(`Delete ${name}?`)) {
-    personService
-    .remove(id)
-    .then(() => {
-      setPersons(persons => persons.filter(person => person.id !== id))
-      setNotification({message: `Deleted ${name}`, type: 'success'})
-      setTimeout(() => {
-      setNotification({message: null, type: null})}, 3000)
-    }
-  )}}
+      personService
+        .remove(id)
+        .then(() => {
+          setPersons(persons => persons.filter(person => person.id !== id))
+          setNotification({ message: `Deleted ${name}`, type: 'success' })
+          setTimeout(() => {
+            setNotification({ message: null, type: null })}, 3000)
+        }
+        )}}
   return(
     <button onClick={handleRemove}>delete</button>
   )
 }
 
-const Filter = ({filter, setNewFilter}) => {
+const Filter = ({ filter, setNewFilter }) => {
   const handleFilterChange = (event) => {
-    console.log(event.target.value)
     setNewFilter(event.target.value)
   }
 
   return (
-  <div>filter shown with <input value={filter} onChange={handleFilterChange} /></div>
+    <div>filter shown with <input value={filter} onChange={handleFilterChange} /></div>
   )
 }
 
-const Persons = ({persons, setPersons, filter, setNotification}) => {
+const Persons = ({ persons, setPersons, filter, setNotification }) => {
   return(
-  <>
-  {persons.map(person => 
-    <Individual key={person.id} person={person} filter={filter} setPersons={setPersons} setNotification={setNotification}/>)}
-  </>
-  )
-}
-
-const Individual = ({person, setPersons, filter, setNotification}) => {
-  if (person.name.toLowerCase().includes(filter.toLowerCase())) {
-  return (
     <>
-    <p>
-    {person.name} {person.number} <Remove id={person.id} setPersons={setPersons} name={person.name} setNotification={setNotification}></Remove>
-    </p>
+      {persons.map(person =>
+        <Individual key={person.id} person={person} filter={filter} setPersons={setPersons} setNotification={setNotification}/>)}
     </>
   )
+}
+
+const Individual = ({ person, setPersons, filter, setNotification }) => {
+  if (person.name.toLowerCase().includes(filter.toLowerCase())) {
+    return (
+      <>
+        <p>
+          {person.name} {person.number} <Remove id={person.id} setPersons={setPersons} name={person.name} setNotification={setNotification}></Remove>
+        </p>
+      </>
+    )
   }
 }
 
@@ -76,7 +75,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newFilter, setNewFilter] = useState('')
-  const [notification, setNotification] = useState({message: null, type: null})
+  const [notification, setNotification] = useState({ message: null, type: null })
 
   useEffect(() => {
     personService
@@ -87,12 +86,10 @@ const App = () => {
   }, [])
 
   const handleNameChange = (event) => {
-    console.log(event.target.value)
     setNewName(event.target.value)
   }
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value)
     setNewNumber(event.target.value)
   }
 
@@ -107,42 +104,42 @@ const App = () => {
       const id = person.id
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         personService
-        .update(id, personObject)
-        .then(returnedPerson => {
-          setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
-          setNotification({message: `Updated ${newName}'s number`, type: 'success'})
-          setNewName('')
-          setNewNumber('')
-          setTimeout(() => {
-          setNotification({message: null, type: null})}, 3000)
-        })
-        .catch(error => {
-        setNotification({ 
-          message: `Information of ${newName} has already been removed from server`,
-          type: 'error'
-        })
-        setTimeout(() => {
-          setNotification({message: null, type: null})
-        }, 3000)
-      })
-    }
+          .update(id, personObject)
+          .then(returnedPerson => {
+            setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
+            setNotification({ message: `Updated ${newName}'s number`, type: 'success' })
+            setNewName('')
+            setNewNumber('')
+            setTimeout(() => {
+              setNotification({ message: null, type: null })}, 3000)
+          })
+          .catch(() => {
+            setNotification({
+              message: `Information of ${newName} has already been removed from server`,
+              type: 'error'
+            })
+            setTimeout(() => {
+              setNotification({ message: null, type: null })
+            }, 3000)
+          })
+      }
     }
     else {
       personService
-      .create(personObject)
-      .then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        setNewName('')
-        setNewNumber('')})
-        setNotification({message: `Added ${newName}`, type: 'success'})
-        setTimeout(() => {
-        setNotification({message: null, type: null})}, 3000)
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')})
+      setNotification({ message: `Added ${newName}`, type: 'success' })
+      setTimeout(() => {
+        setNotification({ message: null, type: null })}, 3000)
     }
   }
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>phonebook</h2>
       <Notification notification={notification}></Notification>
       <Filter filter={newFilter} setNewFilter={setNewFilter}></Filter>
       <h2>add a new</h2>

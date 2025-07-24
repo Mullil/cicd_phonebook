@@ -25,6 +25,10 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(express.static(path.join(__dirname, 'dist')))
 
+app.get('/version', (request, response) => {
+  response.send('Version 0.0.1')
+})
+
 app.get('/info', (request, response) => {
   const time = new Date()
   Person.countDocuments()

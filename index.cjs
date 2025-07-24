@@ -29,6 +29,12 @@ app.get('/version', (request, response) => {
   response.send('Version 0.0.1')
 })
 
+app.get('/health', (request, response) => {
+  // eslint-disable-next-line no-constant-condition
+  if (true) throw('error...')
+  response.send('ok')
+})
+
 app.get('/info', (request, response) => {
   const time = new Date()
   Person.countDocuments()

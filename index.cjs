@@ -26,7 +26,7 @@ const errorHandler = (error, request, response, next) => {
 app.use(express.static(path.join(__dirname, 'dist')))
 
 app.get('/version', (request, response) => {
-  response.send('Version 0.0.2')
+  response.send('Version 0.0.3')
 })
 
 app.get('/health', (request, response) => {
